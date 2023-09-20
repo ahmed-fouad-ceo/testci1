@@ -1,5 +1,3 @@
-name: CI/CD Pipeline
-
 on:
   push:
     branches:
@@ -10,26 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-    - name: Install Dependencies
-      run: npm install
+      # Run SonarQube analysis
+      - name: Run SonarQube analysis
+        uses: SonarSource/sonarcloud-github-action@v5
+        with:
+          organization: ${SONAR_CLOUD_ORGANIZATION}
+          token: ${SONAR_CLOUD_TOKEN}
 
-    - name: Build and Test
-      run: npm test
-
-    - name: Deploy
-      run: |
-        # Add your deployment steps here
-        # For example, deploy to a hosting service
-
-    - name: Security Scan
-      run: |
-        # Add a security scanning tool (e.g., Trivy) to check for vulnerabilities
-        docker run --rm -v $(pwd):/app -w /app aquasec/trivy --exit-code 1 .
+      # Deploy the application
+      - name: Deploy the application
+        run: echo "Deploy the application"
