@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build and Test
+      run: npm test
+
+    - name: Deploy
+      run: |
+        # Add your deployment steps here
+        # For example, deploy to a hosting service
+
+    - name: Security Scan
+      run: |
+        # Add a security scanning tool (e.g., Trivy) to check for vulnerabilities
+        docker run --rm -v $(pwd):/app -w /app aquasec/trivy --exit-code 1 .
