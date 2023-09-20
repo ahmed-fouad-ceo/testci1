@@ -1,3 +1,5 @@
+name: DevSecOps CI/CD
+
 on:
   push:
     branches:
@@ -10,16 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Run SonarQube analysis
-      - name: Run SonarQube analysis
-        uses: SonarSource/sonarcloud-github-action@v5
-        with:
-          organization: ${SONAR_CLOUD_ORGANIZATION}
-          token: ${SONAR_CLOUD_TOKEN}
+      # Run GitHub code scanning
+      - name: Run GitHub code scanning
+        uses: github/codeql-action/main@v1
 
       # Deploy the application
       - name: Deploy the application
